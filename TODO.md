@@ -1,6 +1,6 @@
 ### Cruddy App Todo
 
-###Project Idea
+#### Project Idea
   Create a titled playlist (including artist, song, genre) and then include c3 to depict which artist or genre of music you listen to the most.
 
 #### Basic Improvments (requirements)
@@ -41,18 +41,18 @@
 - [ ] c3 graph
 - [ ] bootstrap/CSS 
 
-### Day 1
+##### Day 1
 - [ ] App idea
 - [ ] Consider spins
 - [ ] Plan MVP
 
-### Day 2
+##### Day 2
 - [ ] roughly implement CRUD
 
-### Day 3
+##### Day 3
 - [ ] implement c3 graph with user data
 - [ ] read/familiarize bootstrap
 
-### Day 4
+##### Day 4
 - [ ] play with features utilizing bootstrap
 
