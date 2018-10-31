@@ -47,12 +47,13 @@
 - [ ] Plan MVP
 
 ##### Day 2
-- [ ] roughly implement CRUD
+- [ ] Roughly implement CRUD
+- [ ] Smoothly implement CRUD
 
 ##### Day 3
-- [ ] implement c3 graph with user data
-- [ ] read/familiarize bootstrap
+- [ ] Implement c3 graph with user data
+- [ ] Read/familiarize bootstrap
 
 ##### Day 4
-- [ ] play with features utilizing bootstrap
+- [ ] Play with features utilizing bootstrap
 

@@ -2,14 +2,34 @@
 <html>
   <head>
     <title>HREXT05 Cruddy App</title>
+    <h1></h1>
+    <!-- <meta charset="utf-8"> -->
+    <!-- <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"> -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous"> -->
     <script src="app.js"></script>
-    <link rel="stylesheet" href="app.css">
+    <!-- <link href="css/bootstrap.min.css" rel="stylesheet"> -->
+    <link rel="stylesheet" href="style.css">
   </head>
   <body>
-    <input type="text" class="text-input" id="theKey" placeholder="Enter some text">
-    <button class="add-text-btn">Add text</button>
-    <button class="clear-cache-btn">Clear Entries</button>
-    <div class="show-text"></div>
+    <div>
+        <input type="text" id="artist" placeholder='Search For Artist' style="text-transform: capitalize;">
+        <button type="button" id"searchBtn" onclick="getSongsByArtist()">Search</button>
+        <button class="save-it">Save</button>
+      </div>
+      <div>
+        <h1>Tracks</h1>
+        <div id="trackList"></div>
+      </div> 
+   <!--  <div id="entirePlaylist"></div>
+    <input type="text" class="text-input" id="artist" placeholder="Enter artist...">
+    <input type="text" class="text-input" id="song-title" placeholder="Enter song...">
+    <button class="add-it">Add</button>
+    <button class="delete-song-btn">Delete song</button>
+    <button class="clear-cache-btn">Clear Playlist</button>
+    <div class="show-playlist"></div> -->
+
+
+    <!-- <script src="js/bootstrap.min.js"></script> -->
   </body>
 </html>
