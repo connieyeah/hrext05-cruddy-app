@@ -1,8 +1,16 @@
+/*
+After localStorage is cleared -> go to create new playlist
+
+Edit playlist name -> edit key in localStorage
+
+*/
+
 // Create a request variable and assign a new XMLHttpRequest object to it.
 var request = new XMLHttpRequest();
-var playlist = {}; //property value to be stored in localStorage
+var keyValue; //key for localStorage
+var playlist = {}; //property to be stored in localStorage
 
-const getSongsByArtist = () => {
+var getSongsByArtist = function() {
   // Clear tracklist div
   document.getElementById('trackList').innerHTML = "";
 
@@ -22,7 +30,7 @@ const getSongsByArtist = () => {
 
   data.toptracks.track.forEach(function(currTrack){
     if(!currTrack.mbid) {
-      return;
+      return 'song not available to add';
     }
 
       var node = $("<div id='trackDiv' data=" + currTrack.mbid + "></div>")
@@ -36,12 +44,12 @@ const getSongsByArtist = () => {
       node.append(text)
       var addBtn = document.createElement("button")
       addBtn.innerText = 'Add Song';
-      //click event to add songs to playlist & save to localStorage
+      // click event to add songs to playlist & save to localStorage
       $(addBtn).on("click", function() {
         if (!playlist[currTrack.mbid]) {
           playlist[currTrack.mbid] = {songArtist: currTrack.artist.name, songName: currTrack.name, mbid: currTrack.mbid}
           console.log(`current playlist`, playlist)
-          localStorage.setItem('playlist1', JSON.stringify(playlist));
+          localStorage.setItem(keyValue, JSON.stringify(playlist));
         } else {
           alert('song already exists in playlist')
         }
@@ -52,19 +60,54 @@ const getSongsByArtist = () => {
     })
   }
   // Send request
-  request.send();
+  request.send(); 
 }
 
 
 $(document).ready(function(){
-  //store     
-  // $(".save-it").on("click", function() {
-  //   localStorage.setItem('playlist1', JSON.stringify(playlist));
-  // })
+
+  var $forTitle = $('.forTitle');
+  var $forSearch = $('.forSearch');
+  var $forTracks = $('.forTracks')
+  var $forPlaylist = $('.forPlaylist');
+  var $body = $('body');
+  var $h1 = $('h1');
+
+
+  if(window.localStorage.length === 0){
+    $forTitle.show()
+    $forSearch.hide()
+    $forTracks.hide()
+    $forPlaylist.hide()
+  } else {
+    $forTitle.hide()
+  }
+
+  // console.log(window.localStorage)
+
+
+//to format key for localStorage
+function createKey(key){
+  return key.replace(/[^a-zA-Z0-9]/g, '');
+}
+
+
+$('#titleBtn').on("click", function(){
+  // if (!$('#titlePlaylist').val()) {
+  //   alert('Enter playlist title!')
+  // } else {
+    keyValue = createKey($('#titlePlaylist').val());
+    $h1.text($('#titlePlaylist').val())
+  // }
+  localStorage.setItem(keyValue, JSON.stringify(playlist))
+  $forTitle.empty()
+  $forSearch.show()
+  $forTracks.show()
+  $forPlaylist.show()
+})
 
   // Not the best way to do this, but this code adds a listener so when you press enter key (keyCode - 13),
-  //  it executes the function that the 'Search' button executes. This works for now but I would find a 
-  //  better way to do this if you have time.
+  //  it executes the function that the 'Search' button executes. 
   document.getElementById("artist")
       .addEventListener("keyup", function(event){
       // Cancel the default action, if needed
@@ -74,6 +117,7 @@ $(document).ready(function(){
       }
   });
 
+  //code for collapsible
   var coll = document.getElementsByClassName("collapsible");
   var i;
 
@@ -89,71 +133,85 @@ $(document).ready(function(){
     });
   }
 
-// console.log(window.localStorage)
+// console.log(`this is localStorage:`,window.localStorage)
 
 // to display current playlist
 $(".collapsible").on("click", function() {
-
   //clear so code beneath does not keep appending to repeating localStorage
   $(".show-playlist").empty();
 
   var list;
 
-  list = JSON.parse(localStorage.getItem('playlist1'));
-  // console.log(list)
+  list = JSON.parse(localStorage.getItem(keyValue));
 
-    var $myPlaylist = $('<div class="playlist">');
+  var $myPlaylist = $('<div class="playlist">');
     
-    function toDelete(key) {
-        console.log(`ATTEMPTING TO DELETE: `, key)
-        // console.log(`before playlist`, playlist)
-        if (playlist[key]) {
-          delete playlist[key]
-        }
-        //updates changes in localStorage
-        localStorage.setItem('playlist1', JSON.stringify(playlist))
-        //update collapsible 
-        $("#"+key).remove() // #fe664d51-b267-4e2d-8daf-d9e3f9cc8a6e
-        // console.log(`after playlist`, playlist)
+  //defined before it's called or else function undefined due to hoisting (es5)
+  function toDelete(key) {
+    console.log(`ATTEMPTING TO DELETE: `, key)
+    // console.log(`before playlist`, playlist)
+    if (playlist[key]) {
+      delete playlist[key];
     }
+    //updates changes in localStorage
+    localStorage.setItem(keyValue, JSON.stringify(playlist))
+    //updates collapsible playlist
+    $("#"+key).remove()
+    // console.log(`after playlist`, playlist)
+  }
 
-    //populate collapsible
-    for (var key in list) {
-      var artistSong = list[key];
-      console.log(artistSong.mbid)
-      //parent element which you can delete and it will get rid of children
-      var $playlistRow = $("<div class='playlist-row' id=" + artistSong.mbid + " data=" + artistSong.mbid + ">")
-      //child
-      var $songItem = $('<div><span class="songArtist">' + artistSong.songArtist + ' - </span>' +
-        '<span class="songName">' + artistSong.songName + '</span></div>')
-      
+  //populate collapsible
+  for (var key in list) {
+    var artistSong = list[key];
+    console.log(`unique mbid: `,artistSong.mbid)
+    //parent element
+    var $playlistRow = $("<div class='playlist-row' id=" + artistSong.mbid + " data=" + artistSong.mbid + ">")
+    var $songItem = $('<div><span class="songArtist">' + artistSong.songArtist + ' - </span>' +
+      '<span class="songName">' + artistSong.songName + '</span></div>')
+    
+    //create delete button to append per row
+    var deleteBtn = $("<button id=" + artistSong.mbid + " type='button'>Delete</button>")
+    
+    $(deleteBtn).on("click", function(e){
+      var songId = e.target.id
+      toDelete(songId)
+    })
 
-      //create delete button to append per row
-      var deleteBtn = $("<button id=" + artistSong.mbid + " type='button'>Delete</button>")
-      deleteBtn.click((e) => {
-        var songId = e.target.id
-        toDelete(songId)
-      })
+    $songItem.append(deleteBtn)
+    $playlistRow.append($songItem)  
+    $myPlaylist.append($playlistRow);
+  }
 
-      
-
-      
-      $songItem.append(deleteBtn)
-      $playlistRow.append($songItem)  
-      $myPlaylist.append($playlistRow);
-    }
-
-    $(".show-playlist").append($myPlaylist)  
-
+  $(".show-playlist").append($myPlaylist)  
 
 });
 
 
 
+
+// $("#formButton").click(function(){
+//         $("#form1").toggle();
+//     });
+
+// //rename key in localStorage
+// $("#rename-playlist-btn").on("click", function(){
+//   $("#rename-key").toggle();
+//     var newKey = $(this).data
+// });
+
+// $(".clear-all-songs").on("click", function() {
+//   alert('Are you sure you want to delete all songs from playlist?')
+//   localStorage.removeItem(keyValue)
+//   $(".show-playlist").empty();
+// })
+
+
 //clears localStorage (playlist)
 $(".clear-cache-btn").on("click", function(){
-    alert('Are you sure you want to clear playlist?')
-    localStorage.clear();
-    $(".show-playlist").empty(); //not only child elements, but also any text within the set of matched elements
-  });
+// alert('Are you sure you want to delete playlist?')
+  // localStorage.removeItem(keyValue)
+  localStorage.clear();
+  $(".show-playlist").empty(); //not only child elements, but also any text within the set of matched elements
+});
+
 });
