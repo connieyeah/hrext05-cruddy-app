@@ -2,35 +2,44 @@
 <html>
   <head>
     <title>HREXT05 Cruddy App</title>
-    <h1>Create playlist...</h1>
+    <h1></h1>
+<!--       <input type="text" placeholder="Enter name of playlist">
+      <button class="create-btn">Create playlist</button> -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="app.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300" rel="stylesheet">
+<!--     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/c3/0.4.21/c3.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.17/d3.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/c3/0.4.21/c3.js"></script> -->
     <link rel="stylesheet" href="style.css">
   </head>
   <body>
-    <div>
-        <input type="text" id="artist" placeholder='Search For Artist' style="text-transform: capitalize;">
-        <button type="button" id"searchBtn" onclick="getSongsByArtist()">Search</button>
-        <button class="save-it">Save</button>
-      </div>
-      <div>
-        <h1>Tracks</h1>
-        <div id="trackList"></div>
-      </div> 
-<!--     <div id="entirePlaylist"></div>
-    <input type="text" class="text-input" id="artist" placeholder="Enter artist...">
-    <input type="text" class="text-input" id="song-title" placeholder="Enter song...">
-    <button class="add-it">Add</button>
-    <button class="delete-song-btn">Delete song</button>
-    <button class="clear-cache-btn">Clear Playlist</button> -->
-
-    <button class="collapsible">Current playlist</button>
-    <div class="content">
-      <button class="clear-cache-btn">Clear Playlist</button>
-      <p class="show-playlist"></p>
+    <div class="forTitle">
+      <input type="text" id="titlePlaylist" placeholder='Title Playlist' style="text-transform: capitalize;">
+      <button type="button" id="titleBtn">Create Playlist</button>
     </div>
-
-
-
+    <div class="forSearch">
+      <input type="text" id="artist" placeholder='Search For Artist' style="text-transform: capitalize;">
+      <button type="button" id"searchBtn" onclick="getSongsByArtist()">Search</button>
+      <!-- <button class="save-it">Save</button> -->
+    </div>
+    <div class="forTracks">
+      <h2>Tracks</h2>
+      <div id="trackList"></div>
+    </div>
+    <div class="forPlaylist">
+      <button class="collapsible">Current playlist</button>
+      <div class="content">
+<!--         <button class="rename-playlist-btn">Rename Playlist</button> -->
+        <button type="button" id="rename-playlist-btn">Rename Playlist</button>
+          <form id="rename-key">
+            <b>New Title</b> <input type="text" name="newKey">
+             <button type="button" id="submit">Submit</button>
+          </form>
+        <button class="clear-cache-btn">Delete Playlist</button>
+        <p class="show-playlist"></p>
+    </div>
+    <!-- </div> -->
+    <!-- <script src="chart.js"></script> -->
   </body>
 </html>
